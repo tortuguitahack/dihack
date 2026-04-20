@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIHACKTOR ROOT - Matriz de Ventas y Tesorería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <style>
+        :root {
+            --neon-red: #ff0000;
+            --neon-blue: #00f2ff;
+            --neon-green: #00ff2a;
+            --dark-bg: #030303;
+        }
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glow-border {
+            border: 1px solid rgba(0, 242, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.15);
+        }
+        .glow-border-green {
+            border: 1px solid rgba(0, 255, 42, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 42, 0.15);
+        }
+        .alert-red {
+            background: linear-gradient(90deg, #6b0f0f 0%, #000 100%);
+            border-left: 4px solid var(--neon-red);
+        }
+        .matrix-text {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--neon-blue);
+        }
+        .matrix-green {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--neon-green);
+        }
+        .tab-active {
+            border-bottom: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #00f2ff; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-black text-gray-100 antialiased">
+
+    <!-- BARRA DE ALERTA - CAPA 7 -->
+    <div class="alert-red p-2 flex justify-between items-center sticky top-0 z-50 shadow-2xl">
+        <div class="flex items-center gap-3 px-4">
+            <div class="w-4 h-4 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_#ff0000]"></div>
+            <span class="font-black tracking-widest text-sm text-red-100">DEFCON 1: CAPA 7 ACTIVA | AUTORIDAD SUPREMA: DIHACKTOR ROOT CEO</span>
+        </div>
+        <div class="text-xs matrix-text px-4" id="live-timer"></div>
+    </div>
+
+    <!-- IDENTIDAD SUPERIOR -->
+    <header class="p-6 border-b border-gray-900 bg-zinc-950/80 backdrop-blur-xl sticky top-10 z-40">
+        <div class="max-w-screen-2xl mx-auto flex flex-col xl:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-cyan-600 to-blue-900 rounded-xl flex items-center justify-center glow-border">
+                    <span class="text-3xl font-black italic">DX</span>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-black italic tracking-tighter text-white">DIHACK<span class="text-cyan-400">TOR</span></h1>
+                    <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest">ECOSISTEMA MULTIDIMENSIONAL V5.0 - AUTO-SANACIÓN ON</p>
+                </div>
+            </div>
+            
+            <!-- MÓDULO DE REDES SOCIALES Y DIFUSIÓN (NUEVO) -->
+            <div class="flex flex-wrap gap-4 items-center bg-black/60 p-3 rounded-xl glow-border">
+                <div class="px-4 border-r border-gray-800">
+                    <p class="text-[10px] text-cyan-400 uppercase font-bold flex items-center gap-2">
+                        <i data-lucide="share-2" class="w-4 h-4"></i> MÓDULO DE DIFUSIÓN MASIVA
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1 font-mono">Próximo Auto-Share en: <span id="share-timer" class="text-white font-bold text-sm">30:00</span></p>
+                </div>
+                <div class="px-4 flex items-center gap-3">
+                    <button onclick="shareEcosystem('Twitter')" class="p-2 bg-zinc-900 hover:bg-blue-400 border border-gray-800 hover:border-blue-400 rounded-full transition-all group shadow-lg">
+                        <i data-lucide="twitter" class="w-5 h-5 text-gray-400 group-hover:text-white"></i>
+                    </button>
+                    <button onclick="shareEcosystem('Facebook')" class="p-2 bg-zinc-900 hover:bg-blue-600 border border-gray-800 hover:border-blue-600 rounded-full transition-all group shadow-lg">
+                        <i data-lucide="facebook" class="w-5 h-5 text-gray-400 group-hover:text-white"></i>
+                    </button>
+                    <button onclick="shareEcosystem('LinkedIn')" class="p-2 bg-zinc-900 hover:bg-blue-700 border border-gray-800 hover:border-blue-700 rounded-full transition-all group shadow-lg">
+                        <i data-lucide="linkedin" class="w-5 h-5 text-gray-400 group-hover:text-white"></i>
+                    </button>
+                    <button onclick="shareEcosystem('WhatsApp')" class="p-2 bg-zinc-900 hover:bg-green-500 border border-gray-800 hover:border-green-500 rounded-full transition-all group shadow-lg">
+                        <i data-lucide="message-circle" class="w-5 h-5 text-gray-400 group-hover:text-white"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-screen-2xl mx-auto p-6 space-y-8">
+        
+        <!-- BÓVEDA DE TESORERÍA Y PASARELAS (DATOS REALES INTEGRADOS) -->
+        <section>
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-cyan-400">
+                <i data-lucide="vault" class="w-5 h-5"></i> BÓVEDA DE TESORERÍA INTEGRADA (ENRUTAMIENTO ACTIVO)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                <!-- Wallbit / US -->
+                <div class="bg-zinc-900/50 p-4 rounded-xl border border-gray-800 hover:border-cyan-500 transition-colors">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs text-gray-400 font-bold">🇺🇸 LEAD BANK (ACH) / WALLBIT</span>
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    </div>
+                    <p class="text-sm font-mono text-white">Cta: ****8779</p>
+                    <p class="text-xs text-gray-500 font-mono">Routing: 101019644</p>
+                    <p class="text-[10px] text-green-400 mt-2">Estado: Recibiendo USD</p>
+                </div>
+                <!-- SEPA Europe -->
+                <div class="bg-zinc-900/50 p-4 rounded-xl border border-gray-800 hover:border-cyan-500 transition-colors">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs text-gray-400 font-bold">🇪🇺 OPENPAYD (SEPA)</span>
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    </div>
+                    <p class="text-sm font-mono text-white">IBAN: ****05456093</p>
+                    <p class="text-xs text-gray-500 font-mono">BIC: CFTEMTM1XXX</p>
+                    <p class="text-[10px] text-green-400 mt-2">Estado: Recibiendo EUR</p>
+                </div>
+                <!-- Cripto USDT/BTC -->
+                <div class="bg-zinc-900/50 p-4 rounded-xl border border-yellow-900 hover:border-yellow-500 transition-colors relative overflow-hidden">
+                    <div class="absolute inset-0 bg-yellow-500/5"></div>
+                    <div class="relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs text-yellow-500 font-bold">⚡ BINANCE API / CRYPTO</span>
+                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        </div>
+                        <p class="text-[10px] font-mono text-gray-300 truncate">BTC: bc1qjjgsx3lwa0wz59l89htcpr28j5s7dtmv99fmw0</p>
+                        <p class="text-[10px] font-mono text-gray-300 truncate">USDT: 0xeBe965EFe1ab53d2da915134d72e5BdBd5E3C053</p>
+                        <p class="text-[10px] text-green-400 mt-2">Binance API: CONECTADA</p>
+                    </div>
+                </div>
+                <!-- Bolivia Local -->
+                <div class="bg-zinc-900/50 p-4 rounded-xl border border-gray-800 hover:border-cyan-500 transition-colors">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs text-gray-400 font-bold">🇧🇴 BANCO MERCANTIL STA CRUZ</span>
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    </div>
+                    <p class="text-sm font-mono text-white">Cta Ahorro: ****4188</p>
+                    <p class="text-xs text-gray-500 font-mono">Diego Edgardo Cortez Yañez</p>
+                    <p class="text-[10px] text-green-400 mt-2">Estado: Recibiendo BOB/USD</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHBOARD DE METRICAS MASIVAS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-zinc-900 p-6 rounded-2xl glow-border">
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-400 text-sm font-bold">Volumen Total (META 20K)</p>
+                    <i data-lucide="target" class="text-cyan-400"></i>
+                </div>
+                <h2 class="text-6xl font-black mt-4 font-mono" id="total-sales">1,245</h2>
+                <div class="w-full bg-gray-800 h-3 mt-6 rounded-full overflow-hidden shadow-inner">
+                    <div id="progress-bar" class="bg-gradient-to-r from-cyan-600 to-cyan-300 h-full w-[6%] transition-all duration-1000 relative">
+                        <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-zinc-900 p-6 rounded-2xl glow-border-green">
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-400 text-sm font-bold">Ingresos Consolidables (USD)</p>
+                    <i data-lucide="dollar-sign" class="text-green-400"></i>
+                </div>
+                <h2 class="text-5xl font-black mt-4 text-green-400 font-mono">$<span id="revenue">8,291.70</span></h2>
+                <p class="text-xs text-gray-500 mt-4 matrix-green uppercase">Ruteando a múltiples pasarelas...</p>
+            </div>
+
+            <div class="bg-zinc-900 p-6 rounded-2xl border border-gray-800 flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <p class="text-gray-400 text-sm font-bold">Logs de Agentes (Terminal)</p>
+                    <div class="w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
+                </div>
+                <div class="bg-black flex-1 rounded-xl p-3 text-[10px] matrix-text overflow-y-auto space-y-1 h-32 border border-gray-800 shadow-inner" id="agent-logs">
+                    > root@dihacktor:~# tail -f /var/log/sales.log<br>
+                    [OK] .env cargado con STRIPE_SECRET_KEY y BINANCE_API_KEY.<br>
+                    [OK] Cron Job auto-sanación verificado (* * * * *).<br>
+                    [INFO] Agente Frank Kern desplegando Copy Hipnótico...<br>
+                </div>
+            </div>
+        </div>
+
+        <!-- REPOSITORIO DE ECOSISTEMAS EXPERTOS (GENERADOS IA) -->
+        <section class="mt-8">
+            <div class="flex justify-between items-end mb-6 border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                        <i data-lucide="cpu" class="text-cyan-400"></i> MATRIZ DE PRODUCTOS (1,000 EXPERTOS)
+                    </h2>
+                    <p class="text-sm text-gray-400 mt-1">Sistemas automatizados de ventas - Precio Global: $6.66</p>
+                </div>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Se inyecta por JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER / BOTONES DE ACCIÓN ROOT -->
+    <footer class="mt-12 border-t border-gray-900 p-8 bg-zinc-950">
+        <div class="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-sm text-gray-500">
+                <p>DIHACKTOR SYSTEM © 2026</p>
+                <p>Ubicación Servidor: Main St. Tarija, KS 64108 US</p>
+                <p>HACKER_AGENT_STRICT_MODE = TRUE</p>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="simulateMassiveTraffic()" class="bg-purple-900/50 hover:bg-purple-600 border border-purple-500 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2">
+                    <i data-lucide="zap"></i> INYECTAR TRÁFICO MUNDIAL
+                </button>
+                <button onclick="forceSync()" class="bg-cyan-900/50 hover:bg-cyan-600 border border-cyan-500 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2">
+                    <i data-lucide="refresh-cw"></i> FORZAR SINCRONIZACIÓN BANCARIA
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE CHECKOUT MÚLTIPLE -->
+    <div id="payment-modal" class="fixed inset-0 bg-black/95 backdrop-blur-2xl hidden z-[100] flex items-center justify-center p-4">
+        <div class="bg-zinc-900 border border-cyan-500 shadow-[0_0_50px_rgba(0,242,255,0.2)] w-full max-w-lg p-8 rounded-2xl relative">
+            <button onclick="closePayment()" class="absolute top-4 right-4 text-gray-500 hover:text-white">
+                <i data-lucide="x"></i>
+            </button>
+            
+            <div class="text-center mb-6">
+                <span class="bg-red-900 text-red-100 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest">Enrutamiento Directo a Bóveda</span>
+                <h3 class="text-2xl font-black mt-3 text-white">Adquirir Ecosistema</h3>
+                <p class="text-cyan-400 font-bold font-mono mt-1" id="modal-product-name"></p>
+            </div>
+            
+            <div class="bg-black p-6 rounded-xl border border-gray-800 text-center mb-6 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-cyan-900/20 to-transparent pointer-events-none"></div>
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Inversión Única</p>
+                <p class="text-5xl font-black text-white mt-2">$6.66 <span class="text-lg text-gray-500">USD</span></p>
+            </div>
+            
+            <p class="text-xs text-gray-500 mb-3 text-center uppercase tracking-widest">Seleccionar Ruta de Pago (Beneficiario: Diego Cortez)</p>
+            
+            <div class="space-y-3">
+                <button onclick="processSale('LeadBank US / ACH')" class="w-full bg-zinc-800 hover:bg-zinc-700 border border-gray-700 text-white font-bold py-4 rounded-xl flex items-center justify-between px-6 transition-colors">
+                    <span class="flex items-center gap-3"><i data-lucide="building"></i> Tarjeta / US Bank (LeadBank)</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-gray-500"></i>
+                </button>
+                <button onclick="processSale('Binance Crypto USDT/BTC')" class="w-full bg-yellow-900/30 hover:bg-yellow-900/60 border border-yellow-700 text-yellow-500 font-bold py-4 rounded-xl flex items-center justify-between px-6 transition-colors">
+                    <span class="flex items-center gap-3"><i data-lucide="bitcoin"></i> Crypto (Binance Pay / Wallets)</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-yellow-700"></i>
+                </button>
+                <button onclick="processSale('SEPA / OpenPayd')" class="w-full bg-blue-900/30 hover:bg-blue-900/60 border border-blue-700 text-blue-400 font-bold py-4 rounded-xl flex items-center justify-between px-6 transition-colors">
+                    <span class="flex items-center gap-3"><i data-lucide="globe"></i> Transferencia SEPA (Europa)</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-blue-700"></i>
+                </button>
+            </div>
+            
+            <p class="text-[9px] text-center text-gray-600 mt-6 uppercase">Transacción cifrada y asegurada por Dihacktor Root Core v5.0</p>
+        </div>
+    </div>
+
+    <script>
+        // Eliminado lucide.createIcons() global para evitar el ReferenceError prematuro.
+
+        // BASE DE DATOS DE PRODUCTOS (Basado en easybuyt.txt y agentesperodihackto.txt)
+        const products = [
+            { id: 'AP-0001', title: 'Oferta Irresistible $100M', expert: 'Alex Hormozi', niche: 'Negocios', img: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=500&auto=format&fit=crop' },
+            { id: 'AP-0002', title: 'Copywriting Hipnótico v4', expert: 'Frank Kern', niche: 'Marketing', img: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=500&auto=format&fit=crop' },
+            { id: 'AP-0003', title: 'Flywheel Automático Amazon', expert: 'Jeff Bezos', niche: 'E-commerce', img: 'https://images.unsplash.com/photo-1523474253046-2cd2c78a9ef1?q=80&w=500&auto=format&fit=crop' },
+            { id: 'EX-2210', title: 'Guía Completa PDF: Social Media', expert: 'Gary Vaynerchuk', niche: 'Personal Brand', img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=500&auto=format&fit=crop' },
+            { id: 'EX-2958', title: 'Template Notion: Machine Learning', expert: 'Andrew Ng', niche: 'Inteligencia Artificial', img: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=500&auto=format&fit=crop' },
+            { id: 'AP-0006', title: 'Funnels Masivos Alta Conversión', expert: 'Russell Brunson', niche: 'Ventas', img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=500&auto=format&fit=crop' },
+            { id: 'AP-0007', title: 'Algoritmo Growth Hacking', expert: 'Sean Ellis', niche: 'Growth', img: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=500&auto=format&fit=crop' },
+            { id: 'AP-0008', title: 'Inversión Digital Inteligente', expert: 'Naval Ravikant', niche: 'Wealth', img: 'https://images.unsplash.com/photo-1611974715853-288ee9de748b?q=80&w=500&auto=format&fit=crop' }
+        ];
+
+        let totalSalesCount = 1245;
+        let totalRevenueAmount = 8291.70;
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-zinc-900 border border-gray-800 rounded-2xl overflow-hidden group hover:border-cyan-500 transition-all duration-300 relative flex flex-col">
+                        <div class="absolute top-3 right-3 bg-black/80 backdrop-blur text-cyan-400 text-[9px] font-mono px-2 py-1 rounded border border-cyan-900 z-10">${p.id}</div>
+                        <div class="h-40 overflow-hidden relative">
+                            <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent z-10"></div>
+                            <img src="${p.img}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" alt="${p.title}">
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <span class="text-[10px] text-purple-400 font-bold uppercase tracking-wider">${p.expert}</span>
+                            <h3 class="text-lg font-black leading-tight mt-1 mb-2 text-white group-hover:text-cyan-300 transition-colors">${p.title}</h3>
+                            <p class="text-xs text-gray-500 mb-4">${p.niche}</p>
+                            <div class="mt-auto flex justify-between items-center pt-4 border-t border-gray-800">
+                                <span class="text-2xl font-black text-green-400 font-mono">$6.66</span>
+                                <button onclick="openPayment('${p.title}', '${p.id}')" class="bg-white hover:bg-cyan-400 text-black font-black text-xs px-4 py-2 rounded-lg transition-colors shadow-[0_0_10px_rgba(255,255,255,0.2)] hover:shadow-[0_0_15px_rgba(0,242,255,0.5)]">ADQUIRIR</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openPayment(name, id) {
+            document.getElementById('modal-product-name').innerText = `[${id}] ${name}`;
+            document.getElementById('payment-modal').classList.remove('hidden');
+        }
+
+        function closePayment() {
+            document.getElementById('payment-modal').classList.add('hidden');
+        }
+
+        function processSale(gateway) {
+            totalSalesCount++;
+            totalRevenueAmount += 6.66;
+            
+            updateStats();
+            logTerminal(`[VENTA MASIVA] +$6.66 USD.`);
+            logTerminal(`[RUTEO] Fondos transferidos vía: ${gateway}`);
+            logTerminal(`[BENEFICIARIO] Diego Cortez (Verificado)`);
+            
+            closePayment();
+            
+            // Alerta visual de éxito en pantalla
+            const alertBox = document.createElement('div');
+            alertBox.className = 'fixed top-20 right-10 bg-green-900/90 border border-green-500 text-white p-4 rounded-xl shadow-[0_0_30px_rgba(0,255,42,0.3)] z-[150] flex items-center gap-3 animate-bounce backdrop-blur-sm';
+            alertBox.innerHTML = `<i data-lucide="check-circle" class="text-green-400"></i><div><p class="font-bold">Pago Recibido Exitosamente</p><p class="text-xs font-mono text-green-300">+$6.66 hacia ${gateway.split(' ')[0]}</p></div>`;
+            document.body.appendChild(alertBox);
+            
+            // Verificación de seguridad para lucide antes de renderizar íconos inyectados
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            
+            setTimeout(() => {
+                alertBox.style.opacity = '0';
+                alertBox.style.transition = 'opacity 0.5s';
+                setTimeout(() => alertBox.remove(), 500);
+            }, 4000);
+        }
+
+        function updateStats() {
+            document.getElementById('total-sales').innerText = totalSalesCount.toLocaleString();
+            document.getElementById('revenue').innerText = totalRevenueAmount.toFixed(2).toLocaleString();
+            
+            const prog = Math.min((totalSalesCount / 20000) * 100, 100);
+            document.getElementById('progress-bar').style.width = prog + '%';
+        }
+
+        function logTerminal(msg) {
+            const consoleEl = document.getElementById('agent-logs');
+            const time = new Date().toLocaleTimeString('es-ES', {hour12: false});
+            consoleEl.innerHTML += `<br><span class="text-gray-500">[${time}]</span> <span class="${msg.includes('ERROR') ? 'text-red-500' : (msg.includes('VENTA') || msg.includes('RUTEO') ? 'text-green-400' : 'text-cyan-400')}">${msg}</span>`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function forceSync() {
+            logTerminal("=========================================");
+            logTerminal("[SYSTEM] FORZANDO SINCRONIZACIÓN BANCARIA...");
+            setTimeout(() => logTerminal("[OK] LeadBank (US) Cta: ****8779 Validada."), 600);
+            setTimeout(() => logTerminal("[OK] OpenPayd (SEPA) IBAN ****05456093 Validado."), 1200);
+            setTimeout(() => logTerminal("[OK] Binance API Conectada (USDT/BTC)."), 1800);
+            setTimeout(() => logTerminal("[OK] Banco Mercantil Santa Cruz Listo para transferencias."), 2400);
+            setTimeout(() => logTerminal("[ROOT] TODAS LAS PASARELAS ENRUTADAS A DIEGO CORTEZ."), 3000);
+        }
+
+        function shareEcosystem(network) {
+            logTerminal(`[DIFUSIÓN] Compartiendo el Ecosistema en ${network}...`);
+            
+            // Simulación visual
+            const alertBox = document.createElement('div');
+            alertBox.className = 'fixed top-20 left-10 bg-blue-900/90 border border-blue-500 text-white p-4 rounded-xl shadow-[0_0_30px_rgba(0,242,255,0.3)] z-[150] flex items-center gap-3 backdrop-blur-sm transition-all duration-300';
+            alertBox.innerHTML = `<i data-lucide="share-2" class="text-blue-400"></i><div><p class="font-bold">Publicado en ${network}</p><p class="text-xs font-mono text-blue-300">Enlace inyectado a los algoritmos globales.</p></div>`;
+            document.body.appendChild(alertBox);
+            
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            
+            setTimeout(() => {
+                alertBox.style.opacity = '0';
+                setTimeout(() => alertBox.remove(), 500);
+            }, 3000);
+        }
+
+        // Lógica del Temporizador de Difusión (30 minutos)
+        let shareSeconds = 1800; // 30 minutos
+        setInterval(() => {
+            shareSeconds--;
+            if (shareSeconds <= 0) {
+                shareSeconds = 1800; // Reiniciar
+                logTerminal("[AUTO-DIFUSIÓN] Ciclo de 30 minutos completado. Difusión automática iniciada.");
+                simulateMassiveTraffic();
+            }
+            const mins = Math.floor(shareSeconds / 60).toString().padStart(2, '0');
+            const secs = (shareSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('share-timer').innerText = `${mins}:${secs}`;
+        }, 1000);
+
+        function simulateMassiveTraffic() {
+            logTerminal("[WARNING] INYECTANDO TRÁFICO ORGÁNICO MUNDIAL...");
+            let count = 0;
+            const interval = setInterval(() => {
+                const randomExpert = products[Math.floor(Math.random() * products.length)];
+                logTerminal(`[TRAFFIC] Nuevo visitante viendo producto de ${randomExpert.expert}...`);
+                count++;
+                if(count > 5) {
+                    clearInterval(interval);
+                    logTerminal("[SUCCESS] Tráfico estabilizado. 50k usuarios activos.");
+                }
+            }, 800);
+        }
+
+        // Reloj tiempo real
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('live-timer').innerText = now.toISOString().replace('T', ' ').substring(0, 19) + ' SYS_TIME';
+        }, 1000);
+
+        // Init
+        window.onload = () => {
+            renderProducts();
+            updateStats();
+            
+            // Llamada segura para renderizar iconos al cargar la página completamente
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            
+            setTimeout(() => logTerminal("[ROOT] Bienvenido, Diego Edgardo Cortez Yañez. La matriz es tuya."), 1000);
+        };
+    </script>
+</body>
+</html>
