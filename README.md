@@ -1,56 +1,51 @@
-# Jarviz — README
+# Jarviz — README (Local-only instructions)
 
-Este proyecto contiene una interfaz frontend (jarviz.html) y un servidor ligero (server.js) para ejecutar Jarviz localmente y conectarlo a tu sistema.
+Jarviz is designed to run entirely on local infrastructure. Docker support has been removed from this repository; all services run as local processes. Keep your credentials and sensitive keys in a single local `.env` file (never commit it).
 
-Objetivo
-- Proveer una experiencia local para Jarviz: interfaz mejorada, TTS, y un endpoint /query demo que puedes extender con tu vector DB y LLM.
+Quick start (local-only)
 
-Contenido
-- jarviz.html - Interfaz frontend (ya presente en el repo)
-- server.js - servidor Express que sirve archivos estáticos y expone /env-config.js y /query
-- docker-compose.yml - stack de ejemplo con Postgres + pgvector y servicio Jarviz
-- .env.example - variables de ejemplo
+1. Prepare .env
+   - Copy `.env.example` to `.env` and fill in values. Keep this file private.
 
-Cómo ejecutar localmente (sin Docker)
-1. Instala dependencias
-   npm init -y
-   npm install express dotenv cors
+2. Install Node dependencies and run the server
+   - npm install
+   - node server.js
+   - Server will run on http://localhost:8000 by default
 
-2. Copia .env.example a .env y llena las variables necesarias
+3. Run the local embedding service (sentence-transformers)
+   - A minimal FastAPI embedding server is included in `ingest/embed_server.py`.
+   - Create a virtualenv and install requirements:
+     python -m venv .venv
+     source .venv/bin/activate
+     pip install -r ingest/requirements.txt
+   - Run the embedding server:
+     python ingest/embed_server.py
+   - By default it listens on http://localhost:9000 and exposes POST /embed
 
-3. Ejecuta el servidor
-   node server.js
+4. Configure Ollama
+   - Ensure Ollama is running locally (e.g. http://localhost:11434) and your preferred models are available.
+   - Set OLLAMA_URL and OLLAMA_PREFERRED_MODELS in your `.env`.
 
-4. Abre en el navegador
-   http://localhost:8000/jarviz.html
+5. Open the frontend
+   - http://localhost:8000/jarviz.html
 
-Cómo ejecutar con Docker (recomendado para demo)
-1. Asegúrate de tener Docker y docker-compose instalados
-2. Copia .env.example a .env y edítalo si lo deseas
-3. Levanta los servicios
-   docker-compose up --build
+Environment variables (.env)
+- PORT=8000
+- JARVIZ_URL=http://localhost:8000
+- GRAFANA_URL=http://localhost:3000
+- EMBEDDING_BACKEND=sentence-transformers  # or 'ollama'
+- EMBEDDING_URL=http://localhost:9000/embed   # used when EMBEDDING_BACKEND=sentence-transformers
+- OLLAMA_URL=http://localhost:11434
+- OLLAMA_PREFERRED_MODELS=.hermes,.codex,.antigravity
+- OLLAMA_EMBEDDING_MODEL= (optional)
+- PGVECTOR_DSN=postgresql://user:pass@localhost:5432/jarviz  # optional
 
-4. Abre en el navegador
-   http://localhost:8000/jarviz.html
+Security notes
+- Keep `.env` private and add it to `.gitignore`.
+- Do not expose service_role or admin keys to the frontend.
+- All calls to Ollama and embeddings happen server-side.
 
-Extender /query para RAG con vector DB
-- En server.js el endpoint /query es un demo que utiliza una búsqueda por palabras sobre un conjunto pequeño SAMPLE_DOCS.
-- Para producción o para indexar 1M de expertos:
-  - Añade un pipeline de ingest que cree embeddings y los almacene en pgvector / Milvus / Weaviate.
-  - Modifica /query para calcular embedding de la consulta (local o usando proveedor) y ejecutar ANN search en el vector DB.
-  - Opcionalmente pasar los documentos top-k a un LLM para sintetizar una respuesta (sólo en backend con service_role o claves seguras).
-
-Seguridad
-- No expongas claves administrativas ni service_role al frontend. Sirve solamente claves públicas (ej.: anon key de Supabase) en /env-config.js si las necesitas.
-- Añade .env a .gitignore y no subas tus secretos al repositorio.
-
-Siguientes pasos recomendados
-- Integrar un pipeline de ingest y un index real (pgvector) si quieres escalar a cientos de miles o millones de documentos.
-- Proveer un LLM local o privado para síntesis y RAG.
-- Configurar Grafana para observar métricas y logs (server expone /metrics y /health).
-
-Si quieres, puedo:
-- Añadir scripts de ingest básicos (Python) para chunking y upsert a pgvector.
-- Implementar el cálculo de embeddings usando tu proveedor o modelos locales.
-- Integrar endpoints TTS de alta calidad.
+Next steps
+- Integrate a vector DB (pgvector) for ANN search and a full ingest pipeline to index large corpora.
+- Optionally connect n8n locally (not included) to orchestrate ingest jobs.
 

@@ -1,33 +1,5 @@
-version: '3.8'
+# Docker removed
 
-services:
-  jarviz:
-    build: ./
-    container_name: jarviz_app
-    ports:
-      - "8000:8000"
-    environment:
-      - PORT=8000
-      - JARVIZ_URL=http://localhost:8000
-      - SUPABASE_URL=
-      - SUPABASE_ANON_KEY=
-      - GRAFANA_URL=
-    depends_on:
-      - postgres
-    volumes:
-      - ./:/app
+This repository used to include Docker configurations for demo purposes. Per project policy, Docker support has been removed and the system is designed to run entirely on local services with credentials kept in a single local .env file.
 
-  postgres:
-    image: ankane/pgvector:latest
-    container_name: jarviz_postgres
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=jarviz
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
+If you previously relied on docker-compose.yml, it has been replaced with this notice. Run services locally as described in README.md.
